@@ -38,7 +38,7 @@ VOID SendChar(
  */
 void SendString(
   volatile USART_t                    *Usart,
-  CHAR8                               *String
+  CONST CHAR8                         *String
 );
 
 /*

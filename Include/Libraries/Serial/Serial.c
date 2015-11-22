@@ -51,7 +51,7 @@ VOID SendChar(
 
 VOID SendString(
   volatile USART_t                    *Usart,
-  CHAR8                               *StringBuffer
+  CONST CHAR8                         *StringBuffer
 )
 {
   while (*StringBuffer != '\0') {

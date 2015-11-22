@@ -26,7 +26,7 @@ void InitDebugLib(
 }
 
 void SendDebugString(
-  CHAR8                               *String
+  CONST CHAR8                         *String
 )
 {
   SendString(&DEBUG_USART, String);

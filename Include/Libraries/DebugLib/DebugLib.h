@@ -19,7 +19,7 @@ void InitDebugLib(
  * @param String             C String to be sent
  */
 void SendDebugString(
-  CHAR8                               *String
+  CONST CHAR8                         *String
 );
 
 /*
