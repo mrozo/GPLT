@@ -110,7 +110,7 @@ typedef uint8_t                        UINTN;
 #define COMPILE_TIME_BYTE7(data)       (COMPILE_TIME_BYTE((data),(7)))
 
 typedef void                           VOID;
-typedef const                          CONST;
+#define CONST                          const
 
 #define NULL ((VOID*)0))
 
