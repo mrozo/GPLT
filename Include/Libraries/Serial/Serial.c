@@ -91,7 +91,6 @@ RETURN_STATUS ReadLine (
   SendDebugCode(1);
 
   while (TRUE) {
-    SendDebugCode(2);
     WaitForChar(Usart);
     *LineBufferPosition = ReadChar(Usart);
 
@@ -104,9 +103,7 @@ RETURN_STATUS ReadLine (
     LineBufferPosition++;
     CharsRead++;
 
-# TODO: poprawic
     if (CharsRead >= (BufferSize-1)){
-      SendDebugCode(3);
       Status = BUFFER_TOO_SMALL;
       *LineBufferPosition = NULL_CHAR;
       break;
@@ -116,7 +113,6 @@ RETURN_STATUS ReadLine (
   SendDebugCode(4);
   if (Status == SUCCESS) {
     *LineBufferPosition = NULL_CHAR;
-    SendDebugCode(5);
   }
 
   return Status;
