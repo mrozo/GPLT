@@ -15,6 +15,14 @@ void InitDebugLib(
 );
 
 /*
+ * Send a string over debug interface
+ * @param String             C String to be sent
+ */
+void SendDebugString(
+  CHAR8                               *String
+);
+
+/*
  * Send a Code indicating current state of the device.
  * @param Code               Code to sent
  */

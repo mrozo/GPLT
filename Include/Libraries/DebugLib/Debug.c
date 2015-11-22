@@ -11,6 +11,8 @@
 #include <Libraries/Portx/Portx.h>
 #include <Libraries/Serial/Serial.h>
 
+#define DEBUG_USART                    USARTC0
+
 void InitDebugLib(
   VOID
 )
@@ -20,14 +22,14 @@ void InitDebugLib(
   PORTC.DIRSET = PIN3_bm;
   PORTC.OUTCLR = PIN2_bm;
   PORTC.DIRCLR = PIN2_bm;
-  InitSerial(&USARTC0, b115200, Ridiculous);
+  InitSerial(&DEBUG_USART, b115200, Ridiculous);
 }
 
 void SendDebugString(
   CHAR8                               *String
 )
 {
-  sendString(&USARTC0, String);
+  SendString(&DEBUG_USART, String);
 }
 
 
