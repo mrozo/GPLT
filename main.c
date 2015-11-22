@@ -16,12 +16,18 @@ int main (
 )
 {
   UINT8 I = 0;
+  CHAR8                                Buffer[16]={NULL_CHAR};
   InitHardware ();
   InitDebugLib();
   while (1) {
-    I++;
-    SendDebugCode(I);
-    _delay_ms(100);
+
+    SendDebugString("$ Waiting for an input\r\n");
+    ReadLine(&USARTC0,Buffer,sizeof(Buffer));
+    SendDebugString("Got string:\r\n");
+    SendDebugString(Buffer);
+    SendDebugString("\n");
+
+
   }
   return 0;
 }

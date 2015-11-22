@@ -16,8 +16,8 @@ UINT16 BaudRateRegisterValues[3][3] = {
 };
 
 
-void InitSerial (
-  USART_t                             *USART,
+VOID InitSerial (
+  volatile USART_t                    *Usart,
   BAUD_RATE                            Speed,
   CLOCK_FREQUENCY                      ClockFrequency
 )
@@ -30,32 +30,94 @@ void InitSerial (
   // Enable RX/TX
   // enable high speed mode
   //
-  USART->CTRLA = 0;
-  USART->BAUDCTRLB = BYTE1(BaudRateRegisterValues[ClockFrequency][Speed]);
-  USART->BAUDCTRLA = BYTE0(BaudRateRegisterValues[ClockFrequency][Speed]);
-  USART->CTRLC = USART_CHSIZE_8BIT_gc | USART_CMODE_ASYNCHRONOUS_gc;
-  USART->CTRLB = USART_TXEN_bm | USART_RXEN_bm;
+  Usart->CTRLA = 0;
+  Usart->BAUDCTRLB = BYTE1(BaudRateRegisterValues[ClockFrequency][Speed]);
+  Usart->BAUDCTRLA = BYTE0(BaudRateRegisterValues[ClockFrequency][Speed]);
+  Usart->CTRLC = USART_CHSIZE_8BIT_gc | USART_CMODE_ASYNCHRONOUS_gc;
+  Usart->CTRLB = USART_TXEN_bm | USART_RXEN_bm;
 
 }
 
-void inline sendChar(
-  USART_t                             *USART,
-  BYTE                                 word
+VOID inline SendChar(
+  volatile USART_t                    *Usart,
+  BYTE                                 Character
 )
 {
-  while( !(USART->STATUS & USART_DREIF_bm) );
-  _delay_ms(1);
-  USART->DATA = word;
+  _delay_us(100);
+  while( !(Usart->STATUS & USART_DREIF_bm) );
+  Usart->DATA = Character;
 }
 
 
-void sendString(
-  USART_t                             *USART,
-  CHAR8 *str
+VOID SendString(
+  volatile USART_t                    *Usart,
+  CHAR8                               *StringBuffer
 )
 {
-  while(*str)
-  {
-    sendChar(USART,*str++);
+  while (*StringBuffer != '\0') {
+    SendChar(Usart,*StringBuffer);
+    StringBuffer++;
   }
+}
+
+CHAR8 ReadChar (
+  volatile USART_t                    *Usart
+){
+  return Usart->DATA;
+}
+
+VOID WaitForChar (
+  volatile USART_t                    *Usart
+){
+
+  while (!IsRxDataReady(Usart)){}
+}
+
+BOOLEAN IsRxDataReady (
+  volatile USART_t                    *Usart
+){
+  return (Usart->STATUS & USART_RXCIF_bm)? TRUE: FALSE;
+}
+
+RETURN_STATUS ReadLine (
+  volatile USART_t                    *Usart,
+  CHAR8                               *LineBuffer,
+  UINT16                               BufferSize
+){
+  UINT16                               CharsRead = 0;
+  CHAR8                               *LineBufferPosition = LineBuffer;
+  RETURN_STATUS                        Status;
+
+  SendDebugCode(1);
+
+  while (TRUE) {
+    SendDebugCode(2);
+    WaitForChar(Usart);
+    *LineBufferPosition = ReadChar(Usart);
+
+    if(*LineBufferPosition == CR_CHAR){
+      *LineBufferPosition = NULL_CHAR;
+      Status = SUCCESS;
+      break;
+    }
+
+    LineBufferPosition++;
+    CharsRead++;
+
+# TODO: poprawic
+    if (CharsRead >= (BufferSize-1)){
+      SendDebugCode(3);
+      Status = BUFFER_TOO_SMALL;
+      *LineBufferPosition = NULL_CHAR;
+      break;
+    }
+  }
+
+  SendDebugCode(4);
+  if (Status == SUCCESS) {
+    *LineBufferPosition = NULL_CHAR;
+    SendDebugCode(5);
+  }
+
+  return Status;
 }
