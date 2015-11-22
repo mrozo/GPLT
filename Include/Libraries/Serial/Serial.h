@@ -26,7 +26,7 @@ void InitSerial (
  * @param Usart              Usart control structure
  * @param Char               8 bit character to be sent
  */
-void inline SendChar(
+VOID SendChar(
   volatile USART_t                    *Usart,
   BYTE                                 Char
 );

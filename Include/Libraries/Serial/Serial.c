@@ -38,7 +38,7 @@ VOID InitSerial (
 
 }
 
-VOID inline SendChar(
+VOID SendChar(
   volatile USART_t                    *Usart,
   BYTE                                 Character
 )
