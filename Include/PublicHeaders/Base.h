@@ -113,7 +113,7 @@ typedef void                           VOID;
 #define NULL ((VOID*)0))
 
 typedef __UINT8_TYPE__                 BYTE;
-typedef __UINT8_TYPE__                 CHAR8;
+typedef __INT8_TYPE__                  CHAR8;
 typedef __UINT16_TYPE__                CHAR16;
 
 typedef __UINT8_TYPE__                 UINT8;

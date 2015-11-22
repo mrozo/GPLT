@@ -88,8 +88,6 @@ RETURN_STATUS ReadLine (
   CHAR8                               *LineBufferPosition = LineBuffer;
   RETURN_STATUS                        Status;
 
-  SendDebugCode(1);
-
   while (TRUE) {
     WaitForChar(Usart);
     *LineBufferPosition = ReadChar(Usart);
@@ -110,7 +108,6 @@ RETURN_STATUS ReadLine (
     }
   }
 
-  SendDebugCode(4);
   if (Status == SUCCESS) {
     *LineBufferPosition = NULL_CHAR;
   }
