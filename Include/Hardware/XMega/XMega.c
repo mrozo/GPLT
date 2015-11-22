@@ -26,16 +26,12 @@ void InitMainClock()
 
 void InitBluetoothDriver ()
 {
-  //
-  // source : http://morf.lv/modules.php?name=tutorials&lasit=29
-  // remap USARTD pins
-  //
+  SendDebugString("$ InitBluetoothDriver\r\n");
   PORTD.OUTSET = PIN3_bm;
   PORTD.DIRSET = PIN3_bm;
   PORTD.OUTCLR = PIN2_bm;
   PORTD.DIRCLR = PIN2_bm;
-  InitSerial (&USARTD0, b38400, Ridiculous);
-  InitBluetooth ();
+  InitBluetooth (&USARTC0);
 }
 
 void InitHardware ()
