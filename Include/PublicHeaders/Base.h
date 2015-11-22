@@ -177,6 +177,7 @@ typedef UINTN                          RETURN_STATUS;
 #define INVALID_PARAMETER              STATUS_CODE(0x04)
 #define DEVICE_ERROR                   STATUS_CODE(0x05)
 #define NOT_SUPPORTED                  STATUS_CODE(0x06)
+#define BUFFER_TOO_SMALL               STATUS_CODE(0x07)
 
 /*
   Check if the given Status code is an error status code
@@ -210,5 +211,39 @@ typedef enum {
   Medium,
   Ridiculous,
 } CLOCK_FREQUENCY;
+
+
+#define NULL_CHAR                       ((CHAR8)0x00)
+#define SOH_CHAR                        ((CHAR8)0x01)
+#define STX_CHAR                        ((CHAR8)0x02)
+#define ETX_CHAR                        ((CHAR8)0x03)
+#define EOT_CHAR                        ((CHAR8)0x04)
+#define ENQ_CHAR                        ((CHAR8)0x05)
+#define ACK_CHAR                        ((CHAR8)0x06)
+#define BEL_CHAR                        ((CHAR8)0x07)
+#define BS_CHAR                         ((CHAR8)0x08)
+#define HT_CHAR                         ((CHAR8)0x09)
+#define LF_CHAR                         ((CHAR8)0x0A)
+#define VT_CHAR                         ((CHAR8)0x0B)
+#define FF_CHAR                         ((CHAR8)0x0C)
+#define CR_CHAR                         ((CHAR8)0x0D)
+#define SO_CHAR                         ((CHAR8)0x0E)
+#define SI_CHAR                         ((CHAR8)0x0F)
+#define DLE_CHAR                        ((CHAR8)0x10)
+#define DC1_CHAR                        ((CHAR8)0x11)
+#define DC2_CHAR                        ((CHAR8)0x12)
+#define DC3_CHAR                        ((CHAR8)0x13)
+#define DC4_CHAR                        ((CHAR8)0x14)
+#define NAK_CHAR                        ((CHAR8)0x15)
+#define SYN_CHAR                        ((CHAR8)0x16)
+#define ETB_CHAR                        ((CHAR8)0x17)
+#define CAN_CHAR                        ((CHAR8)0x18)
+#define EM_CHAR                         ((CHAR8)0x19)
+#define SUB_CHAR                        ((CHAR8)0x1A)
+#define ESC_CHAR                        ((CHAR8)0x1B)
+#define FS_CHAR                         ((CHAR8)0x1C)
+#define GS_CHAR                         ((CHAR8)0x1D)
+#define RS_CHAR                         ((CHAR8)0x1E)
+#define US_CHAR                         ((CHAR8)0x1F)
 
 #endif /* _BASE_H_ */
