@@ -112,10 +112,12 @@ typedef uint8_t                        UINTN;
 typedef void                           VOID;
 #define CONST                          const
 
+#ifndef NULL
 #define NULL ((VOID*)0))
+#endif
 
 typedef __UINT8_TYPE__                 BYTE;
-typedef __INT8_TYPE__                  CHAR8;
+typedef char                           CHAR8;
 typedef __UINT16_TYPE__                CHAR16;
 
 typedef __UINT8_TYPE__                 UINT8;
