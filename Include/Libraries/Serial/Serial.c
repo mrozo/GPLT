@@ -54,7 +54,7 @@ VOID SendString(
   CONST CHAR8                         *StringBuffer
 )
 {
-  while (*StringBuffer != '\0') {
+  while ((*StringBuffer) != NULL_CHAR) {
     SendChar(Usart,*StringBuffer);
     StringBuffer++;
   }
@@ -77,6 +77,25 @@ BOOLEAN IsRxDataReady (
   volatile USART_t                    *Usart
 ){
   return (Usart->STATUS & USART_RXCIF_bm)? TRUE: FALSE;
+}
+
+RETURN_STATUS ReadBuffer (
+  volatile USART_t                    *Usart,
+  CHAR8                               *Buffer,
+  UINT16                               BufferSize
+)
+{
+  RETURN_STATUS                        Status = SUCCESS;
+  UINT16                               CharsRead = 0;
+  CHAR8                               *BufferPosition = Buffer;
+//TODO dodac delay
+  while (CharsRead<=BufferSize) {
+    WaitForChar(Usart);
+    *BufferPosition = ReadChar(Usart);
+    BufferPosition++;
+  }
+
+  return Status;
 }
 
 RETURN_STATUS ReadLine (

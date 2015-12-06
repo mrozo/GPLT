@@ -86,5 +86,17 @@ RETURN_STATUS ReadLine (
   UINT16                               BufferSize
 );
 
+/*
+ * Read data from the USART to fill the Buffer up to BufferSize bytes
+ * @param Usart              Usart control structure
+ * @param LineBuffer         Pointer to a buffer to save the data to
+ * @param BufferSize         Size of the buffer
+ * @retval SUCCESS           The buffer contains the read data
+*/
+RETURN_STATUS ReadBuffer (
+  volatile USART_t                    *Usart,
+  CHAR8                               *Buffer,
+  UINT16                               BufferSize
+);
 
 #endif /* SERIAL_H_ */
