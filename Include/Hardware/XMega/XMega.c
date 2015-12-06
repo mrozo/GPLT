@@ -8,13 +8,14 @@
 #include "XMega.h"
 #include <avr/io.h>
 #include <Libraries/Bluetooth/Bluetooth.h>
+#include <Libraries/DebugLib/DebugLib.h>
 #include <Libraries/Serial/Serial.h>
 #include <Libraries/Portx/Portx.h>
 
 void InitMainClock()
 {
   //
-  //http://morf.lv/modules.php?name=tutorials&lasit=29
+  // http://morf.lv/modules.php?name=tutorials&lasit=29
   // Set up the main clock to 32MHz, Trigger protection mechanism, Enable
   // internal  32Mhz crystal
   //
@@ -26,16 +27,28 @@ void InitMainClock()
 
 void InitBluetoothDriver ()
 {
-  SendDebugString("$ InitBluetoothDriver\r\n");
+  SendDebugLine("$ InitBluetoothDriver\r\n");
   PORTD.OUTSET = PIN3_bm;
   PORTD.DIRSET = PIN3_bm;
   PORTD.OUTCLR = PIN2_bm;
   PORTD.DIRCLR = PIN2_bm;
-  InitBluetooth (&USARTC0);
+  InitBluetooth (&USARTD0);
+}
+
+void InitDebugDriver ()
+{
+  InitPortx();
+  PORTC.OUTSET = PIN3_bm;
+  PORTC.DIRSET = PIN3_bm;
+  PORTC.OUTCLR = PIN2_bm;
+  PORTC.DIRCLR = PIN2_bm;
+  InitDebugLib (&USARTC0, &PORTX);
+  SendDebugLine("$ InitDebugDriver end\r\n");
 }
 
 void InitHardware ()
 {
   InitMainClock ();
+  InitDebugDriver ();
   InitBluetoothDriver ();
 }

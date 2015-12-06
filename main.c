@@ -7,26 +7,21 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <util/delay.h>
 #include <PublicHeaders/Base.h>
 #include <Hardware/XMega/XMega.h>
+#include <Libraries/Serial/Serial.h>
 #include <Libraries/DebugLib/DebugLib.h>
 
 int main (
   VOID
 )
 {
-  UINT8 I = 0;
-  CHAR8                                Buffer[16]={NULL_CHAR};
   InitHardware ();
-  InitDebugLib();
+  SendDebugLine("\r\n\r\n\r\n\r\n");
+  SendDebugLine("$ Witaj przyjacielu!");
+
   while (1) {
-
-    SendDebugString("$ Waiting for an input\r\n");
-    ReadLine(&USARTC0,Buffer,sizeof(Buffer));
-    SendDebugString("Got string:\r\n");
-    SendDebugString(Buffer);
-    SendDebugString("\n");
-
 
   }
   return 0;
