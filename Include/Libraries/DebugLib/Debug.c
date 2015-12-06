@@ -11,25 +11,32 @@
 #include <Libraries/Portx/Portx.h>
 #include <Libraries/Serial/Serial.h>
 
-#define DEBUG_USART                    USARTC0
+USART_t                               *mUsart;
+PORT_t                                *mPort;
 
 void InitDebugLib(
-  VOID
+  USART_t                             *Usart,
+  PORT_t                              *Port
 )
 {
-  InitPortx();
-  PORTC.OUTSET = PIN3_bm;
-  PORTC.DIRSET = PIN3_bm;
-  PORTC.OUTCLR = PIN2_bm;
-  PORTC.DIRCLR = PIN2_bm;
-  InitSerial(&DEBUG_USART, b115200, Ridiculous);
+  mUsart = Usart;
+  mPort = Port;
+  InitSerial(mUsart, b115200, Ridiculous);
 }
 
 void SendDebugString(
   CONST CHAR8                         *String
 )
 {
-  SendString(&DEBUG_USART, String);
+  SendString(mUsart, String);
+}
+
+void SendDebugLine(
+    CONST CHAR8                         *String
+)
+{
+  SendString(mUsart, String);
+  SendString(mUsart, "\r\n");
 }
 
 
@@ -39,6 +46,6 @@ void SendDebugCode(
 {
   CHAR8 DebugString[] = "Debug code 0xxx\r\n";
   sprintf(DebugString+13, "%0X\r\n", Code);
-  PORTX.OUT = Code;
+  mPort->OUT = Code;
   SendDebugString(DebugString);
 }
