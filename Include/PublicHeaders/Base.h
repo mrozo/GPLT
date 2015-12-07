@@ -250,45 +250,61 @@ typedef enum {
 #define RS_CHAR                        ((CHAR8)0x1E)
 #define US_CHAR                        ((CHAR8)0x1F)
 
+
+/*
+ *
+ */
+typedef UINT8                          LOGGING_LEVEL;
+
 /*
  * Code for a critical error message.
  */
-#define CRITICAL_ERROR_MESSAGE         BIT8
+#define CRITICAL_ERROR_MESSAGE         ((UINT8)BIT8)
 
 /*
  * Code for a general error message.
  */
-#define ERROR_MESSAGE                  BIT6
+#define ERROR_MESSAGE                  ((UINT8)BIT6)
 
 /*
  * Code for a non critical message.
  */
-#define WARNING_MESSAGE                BIT4
+#define WARNING_MESSAGE                ((UINT8)BIT4)
 
 /*
  * Code for a general informational message.
  */
-#define INFO_MESSAGE                   BIT2
+#define INFO_MESSAGE                   ((UINT8)BIT2)
 
 /*
  * Mask used to allow any type of a message to be accepted by the debug library.
  */
-#define ANY_MESSAGE                    0xFF
+#define ANY_MESSAGE                    ((UINT8)0xFF)
 
 /*
  * Mask used to disable any debug messages.
  */
-#define NO_MESSAGES                    0x00
+#define NO_MESSAGES                    ((UINT8)0x00)
 
+
+CHAR8 gCriticalErrorMessageString[]    = "CRITICAL_ERROR_MESSAGE";
+CHAR8 gErrorMessageString[]            = "ERROR_MESSAGE";
+CHAR8 gWarningMessageString[]          = "WARNING_MESSAGE";
+CHAR8 gInfoMessage[]                   = "INFO_MESSAGE";
+
+typedef struct {
+  LOGGING_LEVEL                        Level;
+  CHAR8                               *String;
+} LoggingLevelNamesMap;
 /*
  * Array containing mapping of debug message type to its human readable string
  * representation.
  */
-CHAR8 DebuggingLevelStringsMap[][2] = {
-    {CRITICAL_ERROR_MESSAGE, "CRITICAL_ERROR_MESSAGE"},
-    {ERROR_MESSAGE,          "ERROR_MESSAGE"},
-    {WARNING_MESSAGE,        "WARNING_MESSAGE"},
-    {INFO_MESSAGE,           "INFO_MESSAGE"},
+LoggingLevelNamesMap gDebuggingLevelStringsMap[] = {
+    {CRITICAL_ERROR_MESSAGE, gCriticalErrorMessageString},
+    {ERROR_MESSAGE,          gErrorMessageString},
+    {WARNING_MESSAGE,        gWarningMessageString},
+    {INFO_MESSAGE,           gInfoMessage}
 };
 
 #endif /* _BASE_H_ */
