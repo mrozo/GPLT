@@ -217,37 +217,78 @@ typedef enum {
 } CLOCK_FREQUENCY;
 
 
-#define NULL_CHAR                       ((CHAR8)0x00)
-#define SOH_CHAR                        ((CHAR8)0x01)
-#define STX_CHAR                        ((CHAR8)0x02)
-#define ETX_CHAR                        ((CHAR8)0x03)
-#define EOT_CHAR                        ((CHAR8)0x04)
-#define ENQ_CHAR                        ((CHAR8)0x05)
-#define ACK_CHAR                        ((CHAR8)0x06)
-#define BEL_CHAR                        ((CHAR8)0x07)
-#define BS_CHAR                         ((CHAR8)0x08)
-#define HT_CHAR                         ((CHAR8)0x09)
-#define LF_CHAR                         ((CHAR8)0x0A)
-#define VT_CHAR                         ((CHAR8)0x0B)
-#define FF_CHAR                         ((CHAR8)0x0C)
-#define CR_CHAR                         ((CHAR8)0x0D)
-#define SO_CHAR                         ((CHAR8)0x0E)
-#define SI_CHAR                         ((CHAR8)0x0F)
-#define DLE_CHAR                        ((CHAR8)0x10)
-#define DC1_CHAR                        ((CHAR8)0x11)
-#define DC2_CHAR                        ((CHAR8)0x12)
-#define DC3_CHAR                        ((CHAR8)0x13)
-#define DC4_CHAR                        ((CHAR8)0x14)
-#define NAK_CHAR                        ((CHAR8)0x15)
-#define SYN_CHAR                        ((CHAR8)0x16)
-#define ETB_CHAR                        ((CHAR8)0x17)
-#define CAN_CHAR                        ((CHAR8)0x18)
-#define EM_CHAR                         ((CHAR8)0x19)
-#define SUB_CHAR                        ((CHAR8)0x1A)
-#define ESC_CHAR                        ((CHAR8)0x1B)
-#define FS_CHAR                         ((CHAR8)0x1C)
-#define GS_CHAR                         ((CHAR8)0x1D)
-#define RS_CHAR                         ((CHAR8)0x1E)
-#define US_CHAR                         ((CHAR8)0x1F)
+#define NULL_CHAR                      ((CHAR8)0x00)
+#define SOH_CHAR                       ((CHAR8)0x01)
+#define STX_CHAR                       ((CHAR8)0x02)
+#define ETX_CHAR                       ((CHAR8)0x03)
+#define EOT_CHAR                       ((CHAR8)0x04)
+#define ENQ_CHAR                       ((CHAR8)0x05)
+#define ACK_CHAR                       ((CHAR8)0x06)
+#define BEL_CHAR                       ((CHAR8)0x07)
+#define BS_CHAR                        ((CHAR8)0x08)
+#define HT_CHAR                        ((CHAR8)0x09)
+#define LF_CHAR                        ((CHAR8)0x0A)
+#define VT_CHAR                        ((CHAR8)0x0B)
+#define FF_CHAR                        ((CHAR8)0x0C)
+#define CR_CHAR                        ((CHAR8)0x0D)
+#define SO_CHAR                        ((CHAR8)0x0E)
+#define SI_CHAR                        ((CHAR8)0x0F)
+#define DLE_CHAR                       ((CHAR8)0x10)
+#define DC1_CHAR                       ((CHAR8)0x11)
+#define DC2_CHAR                       ((CHAR8)0x12)
+#define DC3_CHAR                       ((CHAR8)0x13)
+#define DC4_CHAR                       ((CHAR8)0x14)
+#define NAK_CHAR                       ((CHAR8)0x15)
+#define SYN_CHAR                       ((CHAR8)0x16)
+#define ETB_CHAR                       ((CHAR8)0x17)
+#define CAN_CHAR                       ((CHAR8)0x18)
+#define EM_CHAR                        ((CHAR8)0x19)
+#define SUB_CHAR                       ((CHAR8)0x1A)
+#define ESC_CHAR                       ((CHAR8)0x1B)
+#define FS_CHAR                        ((CHAR8)0x1C)
+#define GS_CHAR                        ((CHAR8)0x1D)
+#define RS_CHAR                        ((CHAR8)0x1E)
+#define US_CHAR                        ((CHAR8)0x1F)
+
+/*
+ * Code for a critical error message.
+ */
+#define CRITICAL_ERROR_MESSAGE         BIT8
+
+/*
+ * Code for a general error message.
+ */
+#define ERROR_MESSAGE                  BIT6
+
+/*
+ * Code for a non critical message.
+ */
+#define WARNING_MESSAGE                BIT4
+
+/*
+ * Code for a general informational message.
+ */
+#define INFO_MESSAGE                   BIT2
+
+/*
+ * Mask used to allow any type of a message to be accepted by the debug library.
+ */
+#define ANY_MESSAGE                    0xFF
+
+/*
+ * Mask used to disable any debug messages.
+ */
+#define NO_MESSAGES                    0x00
+
+/*
+ * Array containing mapping of debug message type to its human readable string
+ * representation.
+ */
+CHAR8 DebuggingLevelStringsMap[][2] = {
+    {CRITICAL_ERROR_MESSAGE, "CRITICAL_ERROR_MESSAGE"},
+    {ERROR_MESSAGE,          "ERROR_MESSAGE"},
+    {WARNING_MESSAGE,        "WARNING_MESSAGE"},
+    {INFO_MESSAGE,           "INFO_MESSAGE"},
+};
 
 #endif /* _BASE_H_ */
