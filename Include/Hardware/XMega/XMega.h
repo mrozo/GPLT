@@ -8,7 +8,7 @@
 #ifndef _XMEGA_XMEGA_H_
 #define _XMEGA_XMEGA_H_
 
-#include <PublicHeaders/Base.h>
+#include <Libraries/BaseLib/Base.h>
 
 /*
  * Initialize the platform

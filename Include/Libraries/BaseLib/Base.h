@@ -10,18 +10,16 @@
 #ifndef _BASE_H_
 #define _BASE_H_
 
-#include <avr/io.h>
-/*
-  Macro used to indicate the indicate the parameter INPUTa function definition is optional
-*/
-#define OPTIONAL
+#define DEBUG
+#define LOGGING_MASK                   (ANY_MESSAGE)
 
+#include <avr/io.h>
 
 typedef uint8_t                        UINTN;
 /*
 
 */
-#define BIT0                           (1)
+#define BIT0                           (1<<0)
 #define BIT1                           (1<<1)
 #define BIT2                           (1<<2)
 #define BIT3                           (1<<3)
@@ -113,7 +111,7 @@ typedef void                           VOID;
 #define CONST                          const
 
 #ifndef NULL
-#define NULL ((VOID*)0))
+#define NULL ((VOID*)0)
 #endif
 
 typedef __UINT8_TYPE__                 BYTE;
@@ -182,6 +180,7 @@ typedef UINTN                          RETURN_STATUS;
 #define DEVICE_ERROR                   STATUS_CODE(0x05)
 #define NOT_SUPPORTED                  STATUS_CODE(0x06)
 #define BUFFER_TOO_SMALL               STATUS_CODE(0x07)
+#define RESOURCE_BUSY                  STATUS_CODE(0x08)
 
 /*
   Check if the given Status code is an error status code
@@ -259,7 +258,7 @@ typedef UINT8                          LOGGING_LEVEL;
 /*
  * Code for a critical error message.
  */
-#define CRITICAL_ERROR_MESSAGE         ((UINT8)BIT8)
+#define CRITICAL_ERROR_MESSAGE         ((UINT8)BIT7)
 
 /*
  * Code for a general error message.
@@ -277,6 +276,11 @@ typedef UINT8                          LOGGING_LEVEL;
 #define INFO_MESSAGE                   ((UINT8)BIT2)
 
 /*
+ * Code for sending Debug codes over text debug output
+ */
+#define DEBUG_CODE_MESSAGE             ((UINT8)BIT0)
+
+/*
  * Mask used to allow any type of a message to be accepted by the debug library.
  */
 #define ANY_MESSAGE                    ((UINT8)0xFF)
@@ -286,25 +290,25 @@ typedef UINT8                          LOGGING_LEVEL;
  */
 #define NO_MESSAGES                    ((UINT8)0x00)
 
-
-CHAR8 gCriticalErrorMessageString[]    = "CRITICAL_ERROR_MESSAGE";
-CHAR8 gErrorMessageString[]            = "ERROR_MESSAGE";
-CHAR8 gWarningMessageString[]          = "WARNING_MESSAGE";
-CHAR8 gInfoMessage[]                   = "INFO_MESSAGE";
-
 typedef struct {
   LOGGING_LEVEL                        Level;
-  CHAR8                               *String;
+  CONST CHAR8 CONST                   *String;
 } LoggingLevelNamesMap;
+
 /*
- * Array containing mapping of debug message type to its human readable string
- * representation.
+ * Return string representing the given logging level.
+ * @param Level              Logging level.
+ * @retval                   If found pointer to a string representation of the
+ *                           logging level, otherwise NULL.
  */
-LoggingLevelNamesMap gDebuggingLevelStringsMap[] = {
-    {CRITICAL_ERROR_MESSAGE, gCriticalErrorMessageString},
-    {ERROR_MESSAGE,          gErrorMessageString},
-    {WARNING_MESSAGE,        gWarningMessageString},
-    {INFO_MESSAGE,           gInfoMessage}
-};
+CONST CHAR8 * GetLoggingLevelString (
+  LOGGING_LEVEL                        Level
+);
+
+typedef UINTN                          PORT_NUMBER;
+#define IO_PORT0                       ((PORT_NUMBER)1)
+#define IO_PORT1                       ((PORT_NUMBER)2)
+#define IO_PORT2                       ((PORT_NUMBER)3)
+#define IO_PORT3                       ((PORT_NUMBER)4)
 
 #endif /* _BASE_H_ */

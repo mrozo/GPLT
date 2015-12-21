@@ -27,7 +27,7 @@ void InitMainClock()
 
 void InitBluetoothDriver ()
 {
-  SendDebugLine("$ InitBluetoothDriver\r\n");
+  DBG (INFO_MESSAGE, "$ InitBluetoothDriver\r\n");
   PORTD.OUTSET = PIN3_bm;
   PORTD.DIRSET = PIN3_bm;
   PORTD.OUTCLR = PIN2_bm;
@@ -43,7 +43,12 @@ void InitDebugDriver ()
   PORTC.OUTCLR = PIN2_bm;
   PORTC.DIRCLR = PIN2_bm;
   InitDebugLib (&USARTC0, &PORTX);
-  SendDebugLine("$ InitDebugDriver end\r\n");
+  DBG (
+      INFO_MESSAGE,
+        "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"\
+        "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+      );
+  DBG (INFO_MESSAGE, "$ InitDebugDriver end\r\n");
 }
 
 void InitHardware ()

@@ -44,8 +44,17 @@ void SendDebugCode(
   UINT8                                Code
 )
 {
+  return;
   CHAR8 DebugString[] = "Debug code 0xxx\r\n";
   sprintf(DebugString+13, "%0X\r\n", Code);
   mPort->OUT = Code;
-  SendDebugString(DebugString);
+  DBG (DEBUG_CODE_MESSAGE, DebugString);
 }
+
+VOID CpuDeadLoop ( VOID ) {
+  //TODO blokada przerwan, blokada DMA
+  volatile UINT8 x = 0;
+  DBG (CRITICAL_ERROR_MESSAGE, "CpuDeadLoop()");
+  while (x!=1){}
+}
+

@@ -5,20 +5,21 @@
  *      Author: m
  */
 
-#ifndef _BLUETOOTH_BLUETOOTH_H_
-#define _BLUETOOTH_BLUETOOTH_H_
+#ifndef _BLUETOOTH_H_
+#define _BLUETOOTH_H_
 
-#include "PublicHeaders/Base.h"
+#include <Libraries/BaseLib/Base.h>
 
 /*
- * Initilize bluetooth.
+ * Initilize HC-05 bluetooth module.
  *
+ * @param Usart                        Pointer to an USART control strcuture
  * @retval SUCCESS                     Bluetooth module is ready to use
  * @retval GENERAL_ERROR               Failed to initialize bluetooth module
  * @retval NOT_SUPPORTED               Functionality is not yet supported
  */
 RETURN_STATUS InitBluetooth (
-  VOID
+  USART_t                             *Usart
 );
 
-#endif /* INCLUDE_LIBRARIES_BLUETOOTH_BLUETOOTH_H_ */
+#endif /*_BLUETOOTH_H_ */
