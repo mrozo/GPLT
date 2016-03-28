@@ -16,9 +16,9 @@
 #include <avr/io.h>
 
 typedef uint8_t                        UINTN;
-/*
 
-*/
+
+#define BITn(n)                        (1<<n)
 #define BIT0                           (1<<0)
 #define BIT1                           (1<<1)
 #define BIT2                           (1<<2)
@@ -181,6 +181,12 @@ typedef UINTN                          RETURN_STATUS;
 #define NOT_SUPPORTED                  STATUS_CODE(0x06)
 #define BUFFER_TOO_SMALL               STATUS_CODE(0x07)
 #define RESOURCE_BUSY                  STATUS_CODE(0x08)
+#define VALUE_FORBIDDEN                STATUS_CODE(0x09)
+#define VALUE_OUT_OF_RANGE             STATUS_CODE(0x0A)
+#define RESORCE_DOESNT_EXIST           STATUS_CODE(0x0B)
+#define UNEXPECTED_END_OF_THE_STRING   STATUS_CODE(0x0C)
+#define METHOD_NOT_SUPPORTED           STATUS_CODE(0x0D)
+#define OBJECT_DOESNT_EXISTS           STATUS_CODE(0x0E)
 
 /*
   Check if the given Status code is an error status code
@@ -305,10 +311,24 @@ CONST CHAR8 * GetLoggingLevelString (
   LOGGING_LEVEL                        Level
 );
 
-typedef UINTN                          PORT_NUMBER;
-#define IO_PORT0                       ((PORT_NUMBER)1)
-#define IO_PORT1                       ((PORT_NUMBER)2)
-#define IO_PORT2                       ((PORT_NUMBER)3)
-#define IO_PORT3                       ((PORT_NUMBER)4)
+typedef UINTN                          PORT_ID;
+#define IO_PORT_A                      ((PORT_ID)1)
+#define IO_PORT_B                      ((PORT_ID)2)
+#define IO_PORT_C                      ((PORT_ID)3)
+#define IO_PORT_D                      ((PORT_ID)4)
+#define IO_PORT_E                      ((PORT_ID)5)
+#define IO_PORT_F                      ((PORT_ID)6)
+#define IO_PORT_G                      ((PORT_ID)7)
+#define IO_PORT_H                      ((PORT_ID)8)
+
+typedef UINTN                          PORT_TYPE;
+#define INPUT_PORT                     ((PORT_TYPE)1)
+#define OUTPUT_PORT                    ((PORT_TYPE)2)
+
+/*
+ * Check if x is between RangeStart and RangeEnd inclusive
+ */
+#define IS_IN_RANGE(x, RangeStart, RangeEnd)                                   \
+  (((x)>=(RangeStart)) && ((x)<=(RangeEnd))?TRUE:FALSE)
 
 #endif /* _BASE_H_ */

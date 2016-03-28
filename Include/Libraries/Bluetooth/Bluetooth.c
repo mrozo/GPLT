@@ -35,10 +35,10 @@ VOID SendReceiveAtCommand (
 ){
   RETURN_STATUS                        Status;
   DBG (INFO_MESSAGE, "SendReceiveAtCommand : ");
-  DBG (INFO_MESSAGE, CommandStr);
 
   SendString(&USARTD0,"AT");
   if (CommandStr != NULL && CommandStr[0] != NULL_CHAR) { //TODO if length(command) > 0
+    DBG (INFO_MESSAGE, CommandStr);
     SendString(&USARTD0,"+");
     SendString(&USARTD0,CommandStr);
   }
@@ -108,16 +108,18 @@ RETURN_STATUS InitBluetooth (
 
   //mUsart = Usart; //FIXME ta instrukcja zawiesza CPU
   SetupIO ();
-  ResetIntoAtMode ();
 
-  SendReceiveAtCommand (NULL, mRxSerialBuffer, sizeof (mRxSerialBuffer));
-  //ASSERT(strstr (mRxSerialBuffer, "OK") != NULL);
-
-  SendReceiveAtCommand ("NAME=MROZO", mRxSerialBuffer, sizeof (mRxSerialBuffer));
-  //ASSERT(strstr (mRxSerialBuffer, "OK") != NULL);
-
-  SendReceiveAtCommand ("NAME", mRxSerialBuffer, sizeof (mRxSerialBuffer));
-  //ASSERT(strstr (mRxSerialBuffer, "+NAME:MROZO") != NULL);
+  DEBUG_CODE(
+    ResetIntoAtMode ();
+    SendReceiveAtCommand (NULL, mRxSerialBuffer, sizeof (mRxSerialBuffer));
+    ASSERT(strstr (mRxSerialBuffer, "OK") != NULL);
+    SendReceiveAtCommand ("NAME=MROZO", mRxSerialBuffer, sizeof (mRxSerialBuffer));
+    ASSERT(strstr (mRxSerialBuffer, "OK") != NULL);
+    SendReceiveAtCommand ("NAME", mRxSerialBuffer, sizeof (mRxSerialBuffer));
+    ASSERT(strstr (mRxSerialBuffer, "+NAME:MROZO") != NULL);
+    SendReceiveAtCommand("PSWD=1234",mRxSerialBuffer, sizeof (mRxSerialBuffer));
+    ASSERT(strstr (mRxSerialBuffer, "OK") != NULL);
+  );
 
   ResetIntoNormalMode ();
 

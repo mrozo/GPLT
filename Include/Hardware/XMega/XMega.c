@@ -7,10 +7,10 @@
 
 #include "XMega.h"
 #include <avr/io.h>
+#include <Hardware/Portx/Portx.h>
 #include <Libraries/Bluetooth/Bluetooth.h>
 #include <Libraries/DebugLib/DebugLib.h>
 #include <Libraries/Serial/Serial.h>
-#include <Libraries/Portx/Portx.h>
 
 void InitMainClock()
 {

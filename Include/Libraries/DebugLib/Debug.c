@@ -6,9 +6,9 @@
  */ 
 
 #include <avr/io.h>
+#include <Hardware/Portx/Portx.h>
 #include <stdio.h>
 #include "DebugLib.h"
-#include <Libraries/Portx/Portx.h>
 #include <Libraries/Serial/Serial.h>
 
 USART_t                               *mUsart;

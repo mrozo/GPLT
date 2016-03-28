@@ -10,6 +10,9 @@
 #include <Hardware/XMega/XMega.h>
 #include <Libraries/Serial/Serial.h>
 #include <Libraries/DebugLib/DebugLib.h>
+#include <Libraries/CommandLine/CommandLine.h>
+
+#define BLUE_TOOTH                     USARTD0
 
 VOID Int2Str (UINT8 input, CHAR8 output[3]) {
   UINT8 digit;
@@ -30,35 +33,38 @@ VOID Int2Str (UINT8 input, CHAR8 output[3]) {
   input/=10;
 }
 
+void PowerOnSelfTest ( )
+{
+  DBG(INFO_MESSAGE, __DATE__);
+  DBG(INFO_MESSAGE, __TIME__);
+  DBG(INFO_MESSAGE, "$ Witaj przyjacielu!");
+  DBG(INFO_MESSAGE, "LOGGING_LEVEL test start");
+  DBG(INFO_MESSAGE, "INFO_MESSAGE");
+  DBG(DEBUG_CODE_MESSAGE, "DEBUG_CODE_MESSAGE");
+  DBG(WARNING_MESSAGE, "WARNING_MESSAGE");
+  DBG(ERROR_MESSAGE, "ERROR_MESSAGE");
+  DBG(CRITICAL_ERROR_MESSAGE, "CRITICAL_ERROR_MESSAGE");
+  DBG(INFO_MESSAGE, "LOGGING_LEVEL test stop");
+  DBG(INFO_MESSAGE, "Assert test start");
+  DBG(INFO_MESSAGE, "First - ASSERT(TRUE)");
+  ASSERT(TRUE);
+  //DBG (INFO_MESSAGE, "Second - ASSERT(FALSE)");
+  //ASSERT (FALSE);
+  DBG(INFO_MESSAGE, "After Assert test:");
+}
+
 int main (
   VOID
 )
 {
-  InitHardware ();
-  DBG (INFO_MESSAGE, __DATE__);
-  DBG (INFO_MESSAGE, __TIME__);
-  DBG (INFO_MESSAGE, "$ Witaj przyjacielu!");
-
-  DBG (INFO_MESSAGE, "LOGGING_LEVEL test start");
-  DBG (INFO_MESSAGE, "INFO_MESSAGE");
-  DBG (DEBUG_CODE_MESSAGE, "DEBUG_CODE_MESSAGE");
-  DBG (WARNING_MESSAGE, "WARNING_MESSAGE");
-  DBG (ERROR_MESSAGE, "ERROR_MESSAGE");
-  DBG (CRITICAL_ERROR_MESSAGE, "CRITICAL_ERROR_MESSAGE");
-  DBG (INFO_MESSAGE, "LOGGING_LEVEL test stop");
-
-  DBG (INFO_MESSAGE, "Assert test start");
-  DBG (INFO_MESSAGE, "First - ASSERT(TRUE)");
-  ASSERT (TRUE);
-  //DBG (INFO_MESSAGE, "Second - ASSERT(FALSE)");
-  //ASSERT (FALSE);
-  DBG (INFO_MESSAGE, "After Assert test:");
-
-
   UINT8                                ButtonInput=0;
   UINT8                                LedOutput=0;
-  UINT8 i=0;
-  CHAR8                                Buf[4] = { NULL_CHAR };
+  CHAR8                                RxBuff[128] = { NULL_CHAR };
+  CHAR8                               *elements[16] = { NULL };
+  RETURN_STATUS                        Status;
+
+  InitHardware ();
+  PowerOnSelfTest ();
 
   //LEDPORT
   PORTB.DIRSET = BIT0 | BIT1 | BIT2;
@@ -79,28 +85,36 @@ int main (
   PORTA.PIN7CTRL = PORT_OPC_PULLUP_gc;
 
   PORTC.DIRCLR = BIT0 | BIT1;
-  //extrino ma wbudowane pullupy na c1/c0
-  //PORTC.PIN0CTRL = PORT_OPC_PULLUP_gc;
-  //PORTC.PIN1CTRL = PORT_OPC_PULLUP_gc;
 
+
+  WaitForChar(&USARTD0);
+  Help();
   while (1) {
-    _delay_ms(1000);
-    ButtonInput = (~PORTA.IN) & (BIT0 | BIT1 | BIT2 | BIT5 | BIT6 | BIT7);
-    ButtonInput = ButtonInput| (((~PORTC.IN) & (BIT0 | BIT1))<<3);
-
-    LedOutput = ButtonInput;
-
-    PORTB.OUTSET = (BIT0 | BIT1 | BIT2) & LedOutput;
-    PORTB.OUTCLR = (BIT0 | BIT1 | BIT2) & (~LedOutput);
-    PORTF.OUTSET = (BIT3 | BIT4 | BIT5 | BIT6 | BIT7) & LedOutput;
-    PORTF.OUTCLR = (BIT3 | BIT4 | BIT5 | BIT6 | BIT7) & (~LedOutput);
-
-    Int2Str(ButtonInput, Buf);
-    DBG (INFO_MESSAGE, Buf);
-    i++;
+    Status = ReadLine(&BLUE_TOOTH, RxBuff, sizeof (RxBuff));
+    DBG (INFO_MESSAGE, "got line");
+    if (IsSuccess (Status)) {
+      DBG (INFO_MESSAGE, RxBuff);
+      Status = RunCommand(RxBuff);
+      if (IsError (Status)) {
+        SendString(&BLUE_TOOTH,"Blad, sprubuj ponownie.");
+      }
+    } else {
+      SendString(&BLUE_TOOTH, "err: Input too long");
+      DEBUG (ERROR_MESSAGE, "Input data is too long!");
+    }
   }
   return 0;
 }
+
+/*
+ButtonInput = (~PORTA.IN) & (BIT0 | BIT1 | BIT2 | BIT5 | BIT6 | BIT7);
+ButtonInput = ButtonInput| (((~PORTC.IN) & (BIT0 | BIT1))<<3);
+
+PORTB.OUTSET = (BIT0 | BIT1 | BIT2) & LedOutput;
+PORTB.OUTCLR = (BIT0 | BIT1 | BIT2) & (~LedOutput);
+PORTF.OUTSET = (BIT3 | BIT4 | BIT5 | BIT6 | BIT7) & LedOutput;
+PORTF.OUTCLR = (BIT3 | BIT4 | BIT5 | BIT6 | BIT7) & (~LedOutput);
+ */
 
 //TODO DBG() test
 //TODO LOGGING_LEVEL test
